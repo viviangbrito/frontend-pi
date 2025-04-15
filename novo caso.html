@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="css/img/image.png">
+  <title>IDentify</title>
+  <link rel="stylesheet" href="css/novo caso.css">
+
+
+
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="logo-container">
+    <img src="css/img/logo.png" class="logo">
+  </div>
+  
+  <!-- Menu lateral -->
+  <div class="menu-lateral">
+    <a href="#"><img src="css/img/home.png" class="icone" alt="Início">Início</a>
+    <a href="#"><img src="css/img/file.png" class="icone" alt="Caso Novo">Caso Novo</a>
+    <a href="#"><img src="css/img/folder.png" class="icone" alt="Projetos">Casos</a>
+  </div>
+
+<!-- Retângulo de fundo -->
+<div class="retangulo-fundo">
+    <div class="ficha-caso">
+      <div class="cabecalho">
+        <div class="campo">
+          <label for="titulo">Título:</label>
+          <input type="text" id="titulo" value="Caso 1" readonly>
+        </div>
+        <div class="campo">
+          <label for="codigo">Código:</label>
+          <input type="text" id="codigo" value="26783651" readonly>
+        </div>
+        <div class="campo">
+          <label for="perito">Perito:</label>
+          <input type="text" id="perito" value="José" readonly>
+        </div>
+        <div class="campo">
+          <label for="status">Status:</label>
+          <input type="text" id="status" value="Em andamento" readonly>
+        </div>
+        <div class="campo">
+          <label for="data-ocorrencia">Data de ocorrência:</label>
+          <input type="text" id="data-ocorrencia" value="20/02/2025" readonly>
+        </div>
+        <div class="campo">
+          <label for="data-emissao">Data de emissão:</label>
+          <input type="text" id="data-emissao" value="20/02/2025" readonly>
+        </div>
+        <div class="campo">
+          <label for="local">Local:</label>
+          <input type="text" id="local" value="" readonly>
+        </div>
+      </div>
+    
+      <div class="descricao">
+        <p>Descrição completa</p>
+      </div>
+      <button id="btn-salvar-caso" class="salvar">Salvar Dados do Caso</button>
+    </div>
+    <div class="bloco-anexos">
+        <div class="botoes-topo">
+          <button class="botao-icone">
+            <img src="css/img/Pin.png" alt="Localização">
+            <span>Localização</span>
+          </button>
+
+          <button class="botao-icone">
+            <img src="css/img/Vector.png" alt="Anexos">
+            <span>Anexos</span>
+          </button>
+
+          <button class="botao-icone">
+            <img src="css/img/Report.png" alt="Anexos">
+            <span>Relatório</span>
+          </button>
+        </div>
+        <div id="mensagem" style="display:none; margin-top: 10px;"></div>
+
+        <div class="menu-dropdown">
+          <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+            <div class="custom-dropdown" id="dropdown">
+              <button class="dropdown-btn" onclick="toggleDropdown()">Evidências Selecionadas<span class="seta">&#9662;</span></button>
+
+              <div class="dropdown-content" id="lista-evidencias">
+                <!-- Itens adicionados vão aparecer aqui -->
+              </div>
+            </div>
+
+            <input type="file" id="inputEvidencia" style="display: none;">
+            <button class="adicionar" onclick="document.getElementById('inputEvidencia').click()">+ Evidência</button>
+          </div>
+        </div>
+
+        <div class="tabela-evidencias">
+            <table id="tabelaEvidencias">
+              <thead>
+                <tr>
+                    <th>#</th>    
+                  <th>Arquivo</th>
+                  <th>Download</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Linhas das evidências serão adicionadas aqui via JS -->
+                <tr>
+                    <td>1</td>
+                    <td>evidencia.jpg</td>
+                    <td><a href="css/img/evidencia.jpg" download>Download</a></td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+          
+
+        <button class="salvar" onclick="salvarCaso()">Salvar Caso</button>
+    </div>   
+</div>
+  
+
+
+  <!-- Painel superior com busca e perfil -->
+  <div class="painel-flutuante">
+    <div class="painel-conteudo">
+      <div class="search-bloco">
+        <input type="text" placeholder="Buscar casos...">
+        <span class="icone-filtro">
+          <img src="css/img/filtro.png" alt ="Filtro" class="img-filtro">
+        </span>
+      </div>
+  
+      <div class="perfil-bloco">
+        <img src="css/img/foto.png" alt="Perfil" class="icone-perfil">
+        <div class="info">
+          <span class="nome">João Silva</span>
+          <span class="cargo">Administrador</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // === GRÁFICO DE SIMILARIDADE (DOUGHNUT) ===
+      const ctxSimilaridade = document.getElementById('graficoSimilaridade')?.getContext('2d');
+      if (ctxSimilaridade) {
+        new Chart(ctxSimilaridade, {
+          type: 'doughnut',
+          data: {
+            labels: ['Similares', 'Não similares'],
+            datasets: [{
+              label: '95% Similaridade',
+              data: [95, 5],
+              backgroundColor: ['#123458', '#d4c9be'],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            cutout: '70%',
+            plugins: {
+              legend: { position: 'bottom' }
+            }
+          }
+        });
+      }
+
+      // === GRÁFICO DE CASOS CONCLUÍDOS (BARRAS) ===
+      const ctxCasos = document.getElementById('graficoCasos')?.getContext('2d');
+      if (ctxCasos) {
+        new Chart(ctxCasos, {
+          type: 'bar',
+          data: {
+            labels: ['Concluídos', 'Não Concluídos'],
+            datasets: [{
+              label: 'Casos',
+              data: [1, 5],
+              backgroundColor: ['#4CAF50', '#FF6347'],
+              borderColor: ['#388E3C', '#C62828'],
+              borderWidth: 80
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: { enabled: true }
+            },
+            scales: {
+              x: { beginAtZero: true }
+            }
+          }
+        });
+      }
+
+      // === DROPDOWN PERSONALIZADO ===
+      window.toggleDropdown = function () {
+        document.getElementById("dropdown").classList.toggle("active");
+      };
+
+      window.onclick = function (e) {
+        if (!e.target.closest('.custom-dropdown')) {
+          document.getElementById("dropdown").classList.remove("active");
+        }
+      };
+
+      // === ADICIONAR EVIDÊNCIA (LOCAL) ===
+      const inputEvidencia = document.getElementById("inputEvidencia");
+      const listaEvidencias = document.getElementById("lista-evidencias");
+      const mensagemDiv = document.getElementById("mensagem");
+      const tabelaEvidenciasBody = document.querySelector("#tabelaEvidencias tbody");
+      const evidenciasLocal = []; // Array para armazenar as evidências localmente
+
+      inputEvidencia.addEventListener("change", function (event) {
+        const files = event.target.files;
+        if (files.length > 0) {
+          mensagemDiv.style.display = "none"; // Esconde mensagens anteriores
+
+          Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              // Adicionar informações do arquivo para exibição local
+              evidenciasLocal.push({ name: file.name, dataUrl: e.target.result });
+
+              // Atualizar a lista de evidências (dropdown)
+              const link = document.createElement("a");
+              link.href = e.target.result; // Usar Data URL para visualização local
+              link.target = "_blank"; // Abrir em nova aba para visualização
+              link.textContent = file.name;
+              listaEvidencias?.appendChild(link);
+              listaEvidencias?.appendChild(document.createElement("br"));
+
+              // Atualizar a tabela de evidências
+              if (tabelaEvidenciasBody) {
+                const tr = document.createElement("tr");
+                const tdIndex = document.createElement("td");
+                tdIndex.textContent = tabelaEvidenciasBody.rows.length + 1;
+                const tdNome = document.createElement("td");
+                tdNome.textContent = file.name;
+                const tdLink = document.createElement("td");
+                const downloadLink = document.createElement("a");
+                downloadLink.href = e.target.result;
+                downloadLink.download = file.name;
+                downloadLink.textContent = "Download";
+                tdLink.appendChild(downloadLink);
+                tr.appendChild(tdIndex);
+                tr.appendChild(tdNome);
+                tr.appendChild(tdLink);
+                tabelaEvidenciasBody.appendChild(tr);
+              }
+            };
+            reader.readAsDataURL(file); // Ler o arquivo como Data URL
+
+            // Exibir mensagem de sucesso (local)
+            mensagemDiv.style.display = "block";
+            mensagemDiv.style.color = "green";
+            mensagemDiv.textContent = "Evidência adicionada localmente!";
+          });
+
+          // Resetar input
+          event.target.value = '';
+        }
+      });
+
+      // === SALVAR CASO (LOCAL - apenas simulação) ===
+      window.salvarCaso = function () {
+        alert("Caso salvo localmente (funcionalidade de backend removida). Evidências adicionadas: " + evidenciasLocal.map(e => e.name).join(", "));
+      };
+
+      // === SALVAR DADOS DO CASO (LOCAL - simulação) ===
+      document.getElementById('btn-salvar-caso').addEventListener('click', () => {
+        const dados = {
+          titulo: document.getElementById('titulo').value,
+          codigo: document.getElementById('codigo').value,
+          perito: document.getElementById('perito').value,
+          status: document.getElementById('status').value,
+          dataOcorrencia: document.getElementById('data-ocorrencia').value,
+          dataEmissao: document.getElementById('data-emissao').value,
+          local: document.getElementById('local').value,
+          evidencias: evidenciasLocal.map(e => e.name) // Salvar apenas os nomes das evidências localmente
+        };
+        alert('Dados do caso salvos localmente:\n' + JSON.stringify(dados, null, 2));
+        console.log('Dados do caso salvos localmente:', dados);
+      });
+    });
+  </script>
+  
+  <!-- Script separado -->
+<script src="js/script.js"></script>
+
+</body>
+</html>
