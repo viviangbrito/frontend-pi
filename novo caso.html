@@ -76,12 +76,16 @@
           </button>
 
           <button class="botao-icone">
-            <img src="css/img/Report.png" alt="Anexos">
+            <img src="css/img/Report.png" alt="Relatório">
             <span>Relatório</span>
           </button>
         </div>
+        
         <div id="mensagem" style="display:none; margin-top: 10px;"></div>
 
+
+        
+        <div id="conteudo-anexo">
         <div class="menu-dropdown">
           <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
             <div class="custom-dropdown" id="dropdown">
@@ -116,7 +120,7 @@
               </tbody>
             </table>
           </div>
-          
+        </div>
 
         <button class="salvar" onclick="salvarCaso()">Salvar Caso</button>
     </div>   
@@ -230,8 +234,6 @@
 
               // Atualizar a lista de evidências (dropdown)
               const link = document.createElement("a");
-              link.href = e.target.result; // Usar Data URL para visualização local
-              link.target = "_blank"; // Abrir em nova aba para visualização
               link.textContent = file.name;
               listaEvidencias?.appendChild(link);
               listaEvidencias?.appendChild(document.createElement("br"));
@@ -270,7 +272,7 @@
 
       // === SALVAR CASO (LOCAL - apenas simulação) ===
       window.salvarCaso = function () {
-        alert("Caso salvo localmente (funcionalidade de backend removida). Evidências adicionadas: " + evidenciasLocal.map(e => e.name).join(", "));
+        alert("Caso salvo localmente" + evidenciasLocal.map(e => e.name).join(", "));
       };
 
       // === SALVAR DADOS DO CASO (LOCAL - simulação) ===
