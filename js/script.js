@@ -81,8 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Atualizar a lista de evidências (dropdown)
           const link = document.createElement("a");
-          link.href = e.target.result; // Usar Data URL para visualização local
-          link.target = "_blank"; // Abrir em nova aba para visualização
           link.textContent = file.name;
           listaEvidencias?.appendChild(link);
           listaEvidencias?.appendChild(document.createElement("br"));
@@ -140,3 +138,4 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log('Dados do caso salvos localmente:', dados);
   });
 });
+
