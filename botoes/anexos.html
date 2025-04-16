@@ -1,0 +1,34 @@
+<div class="menu-dropdown">
+<div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+      <div class="custom-dropdown" id="dropdown">
+        <button class="dropdown-btn" onclick="toggleDropdown()">Evidências Selecionadas<span class="seta">&#9662;</span></button>
+
+        <div class="dropdown-content" id="lista-evidencias">
+          <!-- Itens adicionados vão aparecer aqui -->
+        </div>
+      </div>
+
+      <input type="file" id="inputEvidencia" style="display: none;">
+      <button class="adicionar" onclick="document.getElementById('inputEvidencia').click()">+ Evidência</button>
+    </div>
+  </div>
+
+  <div class="tabela-evidencias">
+      <table id="tabelaEvidencias">
+        <thead>
+          <tr>
+              <th>#</th>    
+            <th>Arquivo</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Linhas das evidências serão adicionadas aqui via JS -->
+          <tr>
+              <td>1</td>
+              <td>evidencia.jpg</td>
+              <td><a href="css/img/evidencia.jpg" download>Download</a></td>
+            </tr>
+        </tbody>
+      </table>
+</div>
